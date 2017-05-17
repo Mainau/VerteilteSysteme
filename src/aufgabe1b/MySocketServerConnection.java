@@ -17,19 +17,39 @@ public class MySocketServerConnection extends Thread {
 			new ObjectInputStream(socket.getInputStream());
 		System.out.println("Server: incoming connection accepted.");
 	}
+
+	private void disconnect(){
+		try {
+			socket.close();
+			System.out.println("Server: Socked closed.");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public void run() {
-		System.out.println("Server: waiting for message ...");	
-		
+		System.out.println("Server: waiting for message ...");
 		try {
-			String string=(String)objectInputStream.readObject();
-			System.out.println("Server: received '"+string+"'");	
-			objectOutputStream.writeObject("server received "+string);
-			
-			socket.close();
-		}
-		catch(Exception e) {
-			e.printStackTrace();
+			while (true) {
+				try {
+					String string = (String) objectInputStream.readObject();
+					System.out.println("Server: received '" + string + "'");
+					objectOutputStream.writeObject("server received " + string);
+
+
+				}catch (EOFException e) {
+					disconnect();
+					break;
+				}catch (IOException e) {
+					e.printStackTrace();
+				}catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				}
+
+			}
+
+		}catch(Exception e){
+			disconnect();
 		}
 	}
 }

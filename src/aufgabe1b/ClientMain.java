@@ -11,31 +11,26 @@ public class ClientMain {
 	private static final String hostname="localhost";
 	private static MySocketClient client;
 	private static BufferedReader reader;
-	private String uniqueID;
 
 
-	private class ClientInput implements Runnable{
 
-		@Override
-		public void run() {
-			while (true){
-
-			}
-		}
-	}
 
 	public static void main(String args[]) {
+		String input="";
 		try {
-			client=new MySocketClient(hostname,port);
-			//System.out.print("Client: Enter name> ");
-			reader=new BufferedReader(new InputStreamReader(System.in ));
-			String clientName=reader.readLine();
-			do{
-				System.out.println(client.sendAndReceive("Test-"+uniqueID));
-				clientName=reader.readLine();
-			}while(clientName!="exit");
+			//for(int i=0;i<5;i++) {
+				Thread th =new Thread(new MySocketClient(hostname, port,1 ));
+				th.start();
+			//}
+			while(!input.equals("-1")){
+				reader=new BufferedReader(new InputStreamReader(System.in ));
+				input=reader.readLine();
+				System.out.println(input);
+				}
 
-			client.disconnect();
+			th.interrupt();
+
+
 		}
 		catch(Exception e) {
 			e.printStackTrace();
