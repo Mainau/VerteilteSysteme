@@ -1,6 +1,6 @@
 package aufgabe2a;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Date;
@@ -15,6 +15,8 @@ public class WebServer {
     private int port;
     private String filename;
     private Logger logger;
+    private Socket socket;
+    private ServerSocket server;
 
     public WebServer(int port, String filename){
         this.port = port;
@@ -23,14 +25,38 @@ public class WebServer {
     }
 
     public void listen() throws IOException {
-        ServerSocket server = new ServerSocket(port);
+        server = new ServerSocket(port);
         System.out.println("Listening for connection on port 8080 ....");
         while (true) {
-            try (Socket socket = server.accept()) {
+                socket = server.accept();
                 Date today = new Date();
                 String httpResponse = "HTTP/1.1 200 OK\r\n\r\n" + today;
                 socket.getOutputStream().write(httpResponse.getBytes("UTF-8"));
-            }
+
+        }
+    }
+
+    public void sendFile(String path) throws Exception{
+        FileInputStream fis = null;
+        BufferedInputStream bis = null;
+        OutputStream os = null;
+        try {
+
+            File myFile = new File(path);
+            byte [] mybytearray  = new byte [(int)myFile.length()];
+            fis = new FileInputStream(myFile);
+            bis = new BufferedInputStream(fis);
+            bis.read(mybytearray,0,mybytearray.length);
+            os = socket.getOutputStream();
+            logger.info("Sending " + path + "(" + mybytearray.length + " bytes)");
+            os.write(mybytearray,0,mybytearray.length);
+            os.flush();
+            logger.info("Done.");
+        }
+        finally {
+            if (bis != null) bis.close();
+            if (os != null) os.close();
+            if (socket!=null) socket.close();
         }
     }
 
@@ -59,7 +85,7 @@ public class WebServer {
 
 
     public static void main(String args[]) throws Exception {
-        WebServer web = new WebServer(8080, "logfile");
+        WebServer web = new WebServer(8080,"/home/felix/Documents/dev/Kore/VerteilteSystemeAufg2/resources/aufgabe2a/WebServer.log");
         web.listen();
 
 
