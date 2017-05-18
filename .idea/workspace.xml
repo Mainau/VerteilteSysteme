@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9a5b0d8d-ba8c-4eae-86b0-c74319475662" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/bal/ClientMain.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/bal/MySocketClient.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/bal/MySocketServer.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/bal/MySocketServerConnection.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/bal/ServerMain.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="9a5b0d8d-ba8c-4eae-86b0-c74319475662" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -133,6 +126,20 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="VerteilteSystemeAufg2" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="VerteilteSystemeAufg2" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="VerteilteSystemeAufg2" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -690,12 +697,12 @@
       <workItem from="1495021367899" duration="2234000" />
       <workItem from="1495024723484" duration="2910000" />
       <workItem from="1495028391225" duration="7825000" />
-      <workItem from="1495098078441" duration="66000" />
+      <workItem from="1495098078441" duration="729000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="22321000" />
+    <option name="totallyTimeSpent" value="22984000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="30" width="1366" height="738" extended-state="0" />
