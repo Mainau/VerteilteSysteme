@@ -19,7 +19,7 @@ public class WebServer {
     public WebServer(int port, String filename) {
         this.port = port;
         this.filename = filename;
-
+        setupLogging();
     }
 
     public void listen() throws IOException {
