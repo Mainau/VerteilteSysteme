@@ -16,7 +16,7 @@ public class WebServer {
     private String filename;
     private Logger logger;
 
-    public WebServer(int port, String filename) {
+    public WebServer(int port, String filename){
         this.port = port;
         this.filename = filename;
         setupLogging();
@@ -58,7 +58,7 @@ public class WebServer {
     }
 
 
-    public static void main(String args[]) throws IOException {
+    public static void main(String args[]) throws Exception {
         WebServer web = new WebServer(8080, "logfile");
         web.listen();
 
