@@ -19,7 +19,7 @@ public class ClientMain {
 		String input="";
 		try {
 			//for(int i=0;i<5;i++) {
-				Thread th =new Thread(new MySocketClient(hostname, port,1 ));
+				Thread th =new Thread(new MySocketClient(hostname, port,1));
 				th.start();
 			//}
 			while(!input.equals("-1")){

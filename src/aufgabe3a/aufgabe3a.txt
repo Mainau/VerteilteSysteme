@@ -1,0 +1,4 @@
+- Server bearbeitet Anfrage des Clients nicht, sondern initiert einen neuen Thread,
+der dies übernimmt (Bsp.: MySocketServerConnection)
+- Sequentielles Abarbeiten der Anfragen
+- Server-Client-Kommunikation auf mehreren Ports

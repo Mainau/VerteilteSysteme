@@ -49,10 +49,11 @@ public class MySocketClient implements Runnable {
 
 	@Override
 	public void run() {
-		String message ="Test-";
+		int counter=0;
+
 		while(true){
-			message+= UUID.randomUUID().toString();
-			System.out.println("Client"+id+": send "+message);
+			String message ="Client"+id+": send Test-"+counter++;
+			System.out.println(message);
 
 			try {
 				sendAndReceive(message);

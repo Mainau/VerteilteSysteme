@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import rm.requestResponse.Component;
 import rm.requestResponse.Message;
 
-public class PrimeClient {
+public class PrimeClient implements Runnable{
 	private static final String HOSTNAME = "localhost";
 	private static final int PORT = 1234;
 	private static final long INITIAL_VALUE = (long) 1e17;
@@ -32,11 +32,23 @@ public class PrimeClient {
 		this.requestMode = requestMode;
 		this.concurrent = concurrent;
 	}
+	public PrimeClient(){
+		hostname=HOSTNAME;
+		port=PORT;
+		initialValue=INITIAL_VALUE;
+		count=COUNT;
+		requestMode=REQUEST_MODE;
+		concurrent=true;
+	}
 
-	public void run() throws ClassNotFoundException, IOException, InterruptedException {
+	public void run() {
 		communication = new Component();
 		for (long i = initialValue; i < initialValue + count; i++) {
-			processNumber(i);
+			try {
+				processNumber(i);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
 		}
 
 	}
@@ -48,7 +60,7 @@ public class PrimeClient {
 		if (requestMode == "BLOCKING") {
 			//Aufgabe 2d
 			if (concurrent) {
-				communication.send(new Message(hostname, port, new Long(value)));
+				communication.send(new Message(hostname, port, new Long(value)), port, true);
 				System.out.print(value + ": ");
 				Thread pc = new Thread(new LoadingThread());
 				pc.start();
@@ -56,14 +68,14 @@ public class PrimeClient {
 				pc.stop();
 				System.out.println(isPrime.booleanValue() ? "prime" : "not prime");
 			} else {
-				communication.send(new Message(hostname, port, new Long(value)), false);
+				communication.send(new Message(hostname, port, new Long(value)), port, false);
 				isPrime = (Boolean) communication.receive(port, true, true).getContent();
 				System.out.println(value + ": " + (isPrime.booleanValue() ? "prime" : "not prime"));
 			}
 			//Aufgabe 2c)
 		} else {
 			counter=0;
-			communication.send(new Message(hostname, port, new Long(value)), false);
+			communication.send(new Message(hostname, port, new Long(value)),port,  false);
 			System.out.print(value + ": ");
 //			Thread pc = new Thread(new LoadingThread());
 //			pc.start();
@@ -104,7 +116,7 @@ public class PrimeClient {
 				System.out.print(value + ": ");
 
 				try {
-					communication.send(new Message(hostname, port, new Long(value)), false);
+					communication.send(new Message(hostname, port, new Long(value)),3, false);
 					isPrime = (Boolean) communication.receive(port, true, true).getContent();
 
 				} catch (ClassNotFoundException e) {
@@ -149,61 +161,14 @@ public class PrimeClient {
 	}
 
 	public static void main(String args[]) throws IOException, ClassNotFoundException, InterruptedException {
-		String hostname = HOSTNAME;
-		int port = PORT;
-		long initialValue = INITIAL_VALUE;
-		long count = COUNT;
-		String requestMode = REQUEST_MODE;
-		Boolean concurrent = false;
 
-		boolean doExit = false;
+		for(int i =0; i<2; i++){
+			new Thread(new PrimeClient()).start();
+		}
 
-		String input;
-		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
 		System.out.println("Welcome to " + CLIENT_NAME + "\n");
 
-		while (!doExit) {
-			System.out.print("Server hostname [" + hostname + "] > ");
-			input = reader.readLine();
-			if (!input.equals(""))
-				hostname = input;
 
-			System.out.print("Server port [" + port + "] > ");
-			input = reader.readLine();
-			if (!input.equals(""))
-				port = Integer.parseInt(input);
-
-			System.out.print("Request mode [" + requestMode + "] > ");
-			input = reader.readLine();
-			if (!input.equals(""))
-				requestMode = input;
-
-			if (requestMode == "BLOCKING") {
-				System.out.print("Concurrent [" + concurrent + "] > ");
-				input = reader.readLine();
-				if (!input.equals("")) {
-					concurrent = true;
-				}
-			}
-
-			System.out.print("Prime search initial value [" + initialValue + "] > ");
-			input = reader.readLine();
-			if (!input.equals(""))
-				initialValue = Integer.parseInt(input);
-
-			System.out.print("Prime search count [" + count + "] > ");
-			input = reader.readLine();
-			if (!input.equals(""))
-				count = Integer.parseInt(input);
-
-			new PrimeClient(hostname, port, requestMode, concurrent, initialValue, count).run();
-
-			System.out.println("Exit [n]> ");
-			input = reader.readLine();
-			if (input.equals("y") || input.equals("j"))
-				doExit = true;
-
-		}
 	}
 }

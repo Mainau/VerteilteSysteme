@@ -55,19 +55,18 @@ public class PrimeServer {
     		LOGGER.fine(request.toString()+" received.");
 
     		LOGGER.finer("Sending ...");
-		  //  try {
-		    	//communication.send(new Message("localhost",port,
-		    	//		new Boolean(primeService(request.longValue()))),true);
-		//	} catch (IOException e) {
-		//		e.printStackTrace();
-		//	}
+		    try {
+		    	communication.send(new Message("localhost",port, new Boolean(primeService(request.longValue()))), port, false);//"localhost",port,new Boolean(primeService(request.longValue()))),true);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		    LOGGER.fine("message sent.");
     	}
     }
 	
 		
 	public static void main(String[] args) {
-		int port = 0;
+		int port = 1234;
 
 		for (int i = 0; i < args.length; i++) {
 			switch (args[i]) {
