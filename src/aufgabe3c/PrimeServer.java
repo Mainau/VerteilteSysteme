@@ -17,6 +17,7 @@ public class PrimeServer {
 	private static final Object valueLock = new Object();
 	private Component communication;
 	private int port = PORT;
+	private int resultClientPort;
 
 
 	public PrimeServer(int port)
@@ -41,11 +42,13 @@ public class PrimeServer {
 				Long request = null;
 				System.out.println("Server: listening on port " + port);
 				LOGGER.finer("Receiving ...");
-				request=(Long)(communication.receive(port, true, false).getContent());
+				Message msg =communication.receive(port, true, false);
+				request=(Long)msg.getContent();
+				resultClientPort= msg.getPort();
+
 				LOGGER.fine(request.toString()+" received.");
-				//communication.send(new Message("localhost",1234,true),1234,true);
 				Thread connection =
-					new Thread(new PrimeServerConnection(request, port, LOGGER));
+					new Thread(new PrimeServerConnection(request, resultClientPort, LOGGER));
 				connection.start();
 			} catch (IOException e) {
 				e.printStackTrace();

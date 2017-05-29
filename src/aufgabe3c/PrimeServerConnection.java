@@ -47,9 +47,13 @@ public class PrimeServerConnection implements Runnable {
 
     @Override
     public void run() {
+        Boolean isPrime;
 
         try {
-            communication.send(new Message("localhost",port, new Boolean(primeService(request.longValue()))), 3000, true);//"localhost",port,new Boolean(primeService(request.longValue()))),true);
+            isPrime=new Boolean(primeService(request.longValue()));
+
+            communication.send(new Message("localhost",port, isPrime), port, true);//"localhost",port,new Boolean(primeService(request.longValue()))),true);
+
             System.out.println("erfolgreich");
         } catch (IOException e) {
             e.printStackTrace();
