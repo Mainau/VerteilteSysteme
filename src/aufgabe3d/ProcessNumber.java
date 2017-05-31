@@ -1,4 +1,4 @@
-package aufgabe3c;
+package aufgabe3d;
 
 import rm.requestResponse.Component;
 import rm.requestResponse.Message;
@@ -53,6 +53,7 @@ public class ProcessNumber implements Runnable {
             System.out.print("Client-" + clientID + ": " + value + ": ");
             System.out.println(isPrime.booleanValue() ? "prime" : "not prime");
         }
+
 
     }
 }

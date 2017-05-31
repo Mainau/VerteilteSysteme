@@ -1,4 +1,4 @@
-package aufgabe3c;
+package aufgabe3e;
 
 import rm.requestResponse.Component;
 import rm.requestResponse.Message;
@@ -16,6 +16,7 @@ public class PrimeClient implements Runnable {
     String hostname;
     int port;
     long initialValue, count;
+    String requestMode;
     Boolean concurrent;
     static int counter = 0;
 

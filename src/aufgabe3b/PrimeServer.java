@@ -11,7 +11,7 @@ import rm.requestResponse.Message;
 public class PrimeServer {
     private final static int PORT = 1234;
     private final static Logger LOGGER = Logger.getLogger(PrimeServer.class.getName());
-    private static final Object valueLock = new Object();
+
 
 
     private Component communication;

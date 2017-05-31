@@ -59,47 +59,16 @@ public class PrimeClient implements Runnable {
         int counter = 0;
         synchronized (valueLock) {
 
-            if (requestMode == "BLOCKING") {
+            communication.send(new Message(hostname, port, new Long(value)), port, true);
+            System.out.print("Client-" + id + ": " + value + ": ");
+            Thread pc = new Thread(new LoadingThread());
+            pc.start();
+            isPrime = (Boolean) communication.receive(port, true, true).getContent();
+            pc.stop();
+            System.out.println(isPrime.booleanValue() ? "prime" : "not prime");
 
-                if (concurrent) {
-                    communication.send(new Message(hostname, port, new Long(value)), port, true);
-                    System.out.print("Client-" + id + ": " + value + ": ");
-                    Thread pc = new Thread(new LoadingThread());
-                    pc.start();
-                    isPrime = (Boolean) communication.receive(port, true, true).getContent();
-                    pc.stop();
-                    System.out.println(isPrime.booleanValue() ? "prime" : "not prime");
-                } else {
-                    communication.send(new Message(hostname, port, new Long(value)), port, false);
-                    isPrime = (Boolean) communication.receive(port, true, true).getContent();
-                    System.out.println("Client-" + id + ": " + value + ": " + (isPrime.booleanValue() ? "prime" : "not prime"));
-                }
-            } else {
-                counter = 0;
-                communication.send(new Message(hostname, port, new Long(value)), port, false);
-                System.out.print(value + ": ");
-
-                while (isPrime == null) {
-                    try {
-                        isPrime = (Boolean) communication.receive(port, false, true).getContent();
-                    } catch (NullPointerException e) {
-                        if (counter++ > 0) System.out.print(".");
-                        try {
-                            Thread.sleep(1000);
-
-                        } catch (InterruptedException e1) {
-                            // TODO Auto-generated catch block
-                            e1.printStackTrace();
-                        }
-                        continue;
-                    }
-
-                    System.out.println(isPrime.booleanValue() ? "prime" : "not prime");
-                }
-
-
-            }
         }
+
     }
 
 

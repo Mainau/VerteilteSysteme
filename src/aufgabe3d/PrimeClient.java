@@ -1,4 +1,4 @@
-package aufgabe3c;
+package aufgabe3d;
 
 import rm.requestResponse.Component;
 import rm.requestResponse.Message;
