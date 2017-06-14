@@ -13,20 +13,20 @@ import java.util.logging.Logger;
  */
 public class PrimeServerConnection implements Runnable{
 
-    private Logger LOGGER;
+
     private Component communication;
     private int port;
     private Long request;
     private long msgrcvTime;
+    private static final Object valueLock2 = new Object();
 
-    public PrimeServerConnection(Long request, long msgrcvTime, int port, Logger logger) {
+    public PrimeServerConnection(Long request, long msgrcvTime, int port) {
         communication = new Component();
         if (port > 0)
             this.port = port;
-        this.LOGGER = logger;
         this.request = request;
         this.msgrcvTime=msgrcvTime;
-        setLogLevel(Level.FINER);
+
 
     }
 
@@ -38,13 +38,6 @@ public class PrimeServerConnection implements Runnable{
                 return false;
         }
         return true;
-    }
-
-    void setLogLevel(Level level) {
-        for (Handler h : Logger.getLogger("").getHandlers())
-            h.setLevel(level);
-        // LOGGER.setLevel(level);
-        // LOGGER.info("Log level set to " + level);
     }
 
 
@@ -62,14 +55,17 @@ public class PrimeServerConnection implements Runnable{
             long waitingTime=(processing_start_time-msgrcvTime);
             long processingTime = (processing_end_time - processing_start_time);
             values=new Object[]{isPrime, waitingTime, processingTime};
-            communication.send(new Message("localhost",port, values), port, true);//"localhost",port,new Boolean(primeService(request.longValue()))),true);
+            communication.cleanup();
+            synchronized (valueLock2) {
+                communication.send(new Message("localhost", port, values), port, true);
+            } communication.cleanup();
             PrimeServer.decreaseCounter();
             //System.out.println("erfolgreich");
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        // LOGGER.fine("message sent.");
+
     }
 }
 

@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 
-public class PrimeServer {
+public class PrimeServer implements Runnable{
     private final static int PORT = 1234;
     private final static Logger LOGGER = Logger.getLogger(PrimeServer.class.getName());
     private Component communication;
@@ -31,11 +31,11 @@ public class PrimeServer {
         communication = new Component();
         this.threadAnzahl = threadAnzahl;
         this.dynamic = dynamic;
-
-        if (port > 0)
-            this.port = PORT;
-
+        this.port=port;
         setLogLevel(Level.FINER);
+
+
+
     }
 
     void setLogLevel(Level level) {
@@ -64,6 +64,11 @@ public class PrimeServer {
         return counter.decrementAndGet();
     }
 
+    @Override
+    public void run() {
+        listen();
+    }
+
     private class CounterUpdate implements Runnable {
        long counter;
         public void run() {
@@ -85,19 +90,21 @@ public class PrimeServer {
         }else{
             executorService=newFixedThreadPool(threadAnzahl);
         }
+
+
         while (true) {
             try {
-
+                communication.cleanup();
                 Long request = null;
-               // System.out.println("Server: listening on port " + port);
                // LOGGER.finer("Receiving ...");
                 Message msg = communication.receive(port, true, false);
+
                 long msgrcvTime= System.nanoTime();
                 //Thread counterUpdate= new Thread(new CounterUpdate());
                 //counterUpdate.start();
                 request = (Long) msg.getContent();
                 resultClientPort = msg.getPort();
-                executorService.execute(new PrimeServerConnection(request, msgrcvTime, resultClientPort, LOGGER));
+                executorService.execute(new PrimeServerConnection(request, msgrcvTime, resultClientPort));
                // LOGGER.fine(request.toString() + " received.");
                // System.out.println("Server"+counter.get());
 

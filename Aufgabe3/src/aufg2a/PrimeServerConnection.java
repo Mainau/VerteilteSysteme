@@ -63,8 +63,9 @@ public class PrimeServerConnection implements Runnable{
             long processingTime = (processing_end_time - processing_start_time);
             values=new Object[]{isPrime, waitingTime, processingTime};
             communication.send(new Message("localhost",port, values), port, true);//"localhost",port,new Boolean(primeService(request.longValue()))),true);
+            communication.cleanup();
             PrimeServer.decreaseCounter();
-            //System.out.println("erfolgreich");
+
 
         } catch (IOException e) {
             e.printStackTrace();

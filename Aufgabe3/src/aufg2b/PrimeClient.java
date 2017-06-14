@@ -12,6 +12,7 @@ public class PrimeClient implements Runnable {
     private static final long COUNT = 20;
     private static final String CLIENT_NAME = PrimeClient.class.getName();
     private static final Object valueLock = new Object();
+
     private static final Object counterLock = new Object();
     private static long waitingTimeAVG=0;
     private static long waitingTimeCount=0;
@@ -62,8 +63,9 @@ public class PrimeClient implements Runnable {
         long waitingTime, processingTime, completeTime;
         long sendTime, receiveTime;
         sendTime=System.nanoTime();
-        communication.send(new Message(hostname, receivePort, value), 1234, true);
-        communication.cleanup();
+
+            communication.send(new Message(hostname, receivePort, value), 1234, true);
+
 
         results = (Object[])communication.receive(receivePort, true, false).getContent();
         receiveTime=System.nanoTime();
@@ -108,7 +110,7 @@ public class PrimeClient implements Runnable {
 
     public static void main(String args[]) {
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 4; i++) {
             new Thread(new PrimeClient(i)).start();
         }
 
