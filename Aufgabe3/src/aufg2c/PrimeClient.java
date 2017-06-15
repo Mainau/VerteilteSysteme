@@ -1,4 +1,4 @@
-package aufg2b;
+package aufg2c;
 
 import rm.requestResponse.Component;
 import rm.requestResponse.Message;
